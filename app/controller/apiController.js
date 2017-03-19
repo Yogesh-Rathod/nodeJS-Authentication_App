@@ -18,8 +18,6 @@ module.exports = function (app) {
 
 	app.post('/user-registration', function (req, res) {
 
-		res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
-
 		var usersData = {
 			fullname: req.body.fullname,
 			username: req.body.username,
