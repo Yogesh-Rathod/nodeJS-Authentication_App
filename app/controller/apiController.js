@@ -12,7 +12,7 @@ module.exports = function (app) {
 	 		if (err) {
 	 			throw err;
 	 		}
-			res.render('pages/index');
+			res.render('pages/index', { data: data });
 	 	})
  	});
 
