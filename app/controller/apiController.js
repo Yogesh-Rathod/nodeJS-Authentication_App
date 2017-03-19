@@ -1,6 +1,7 @@
 var bodyParser = require('body-parser');
 // require Local modules
 var setupModel = require('../models/setupModel');
+var sendRegistrationEmail = require('./mailer');
 
 module.exports = function (app) {
 
@@ -32,6 +33,7 @@ module.exports = function (app) {
 			if (err) {
 				throw err;
 			}
+			sendRegistrationEmail( req.body.email );
 			res.send(data);
 		});
 	});
