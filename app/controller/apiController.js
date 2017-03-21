@@ -14,7 +14,7 @@ module.exports = function (app) {
 	 			throw err;
 	 		}
 			res.render('pages/index', { data: data });
-	 	})
+	 	});
  	});
 
 	app.post('/user-registration', function (req, res) {
