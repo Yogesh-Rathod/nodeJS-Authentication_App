@@ -10,7 +10,9 @@ var config = require('./app/config');
 var apiController = require('./app/controller/apiController');
 
 // Set Port To be used
-app.set('port', (process.env.PORT || 5000));
+// app.set('port', (process.env.PORT || 5000));
+
+var port = process.env.PORT || 5000;
 
 // Using cors for Cross domain Api Requests
 app.use(cors());
@@ -34,7 +36,7 @@ apiController(app);
 //   response.render('pages/index');
 // });
 
-app.listen( app.get('port'), function() {
-  console.log('App is running on port', app.get('port'));
+app.listen( port, function() {
+  console.log('App is running on port', port);
 });
 
