@@ -12,7 +12,7 @@ var transporter = nodemailer.createTransport({
 // send mail with defined transport object
 module.exports = function(usersEmail) {
 	// setup email data with unicode symbols
-	let mailOptions = {
+	var mailOptions = {
 	  from: '"Yogesh Rathod " <yr1666@gmail.com>',
 	  to: usersEmail,
 	  subject: "Successfully Registered on Yogesh Rathod's MEAN Stack App.",
