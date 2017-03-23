@@ -1,7 +1,7 @@
 var bodyParser = require('body-parser');
 // require Local modules
 var setupModel = require('../models/setupModel');
-var sendRegistrationEmail = require('./mailer');
+var sendRegistrationEmail = require('./mailerController');
 
 module.exports = function (app) {
 
