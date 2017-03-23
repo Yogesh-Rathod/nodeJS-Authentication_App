@@ -18,7 +18,8 @@ module.exports = function(usersEmail) {
 	  subject: "Successfully Registered on Yogesh Rathod's MEAN Stack App.",
 	  html: "<b>Thank you For Registering on Yogesh Rathod's MEAN Stack App.</b>"
 	};
-	transporter.sendMail(mailOptions, (err, info) => {
+
+	transporter.sendMail(mailOptions, function(err, info) {
 		if (err) {
 			throw err;
 		}
