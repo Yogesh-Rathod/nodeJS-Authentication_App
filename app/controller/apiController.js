@@ -33,7 +33,7 @@ module.exports = function (app) {
 			if (err) {
 				throw err;
 			}
-			// sendRegistrationEmail( req.body.email );
+			sendRegistrationEmail( req.body.email );
 			res.send(data);
 		});
 	});
