@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 
 var RegistrationSchema = new Schema({
 	fullname: String,
-	username: String,
 	email: String,
 	mobilenumber: String,
-	password: String
+	password: String,
+	profileimage:  { data: Buffer, contentType: String }
 });
 
 var nodeApp = mongoose.model('nodeApp', RegistrationSchema);

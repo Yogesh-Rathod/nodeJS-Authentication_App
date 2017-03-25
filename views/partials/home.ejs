@@ -1,6 +1,6 @@
 <div class="container">
 	<div class="jumbotron">
-		<h2>First NodeJS App Developed by Yogesh rathod.</h2>
+		<h2>First NodeJS <img src="lang-logo.png" alt="NodeJS Logo"> App Developed by Yogesh rathod.</h2>
 	</div>
 	<h2 class="media-heading">
 		List of All Registered users is Below
@@ -22,7 +22,11 @@
 				<div class="td col-xs-3"><%= newData.fullname %></div>
 				<div class="td col-xs-3"><%= newData.username %></div>
 				<div class="td col-xs-3"><%= newData.email %></div>
-				<div class="td col-xs-3"><%= newData.mobilenumber %></div>
+				<% if (newData.mobilenumber) { %>
+					<div class="td col-xs-3"><%= newData.mobilenumber %></div>
+				<% } else { %>
+					<div class="td col-xs-3">Not Given</div>
+				<% } %>
 			</div>
 	    <% }); %>
 		</div>
