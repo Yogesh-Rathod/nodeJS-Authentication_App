@@ -61,3 +61,8 @@ footer {
   margin-top: 25px;
   text-align: center;
 }
+
+main li {
+  list-style-type: none;
+  margin-bottom: 10px;
+}

@@ -1,12 +1,3 @@
-<% if(successMessage) { %>
-	<div class="success-msg">
-		<div class="success-text">
-			<i class="fa fa-check" aria-hidden="true"></i>
-			<span>Success</span>
-		</div>
-	</div>
-<% } %>
-
 <div class="container">
 	<div class="col-xs-8 col-xs-offset-2">
 		<div class="jumbotron">
@@ -16,7 +7,7 @@
 		</div>
 		<p>All Fields with <span class="mandatory">( * )</span> Are Mandatory</p>
 		<div class="form-group">
-			<form action="/user-registration" method="POST">
+			<form action="/user-registration" method="POST" >
 				<div class="form">
 					<div class="form-group">
 						<label>Name <span class="mandatory">*</span></label>

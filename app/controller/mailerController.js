@@ -1,5 +1,5 @@
 var nodemailer = require('nodemailer');
-
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -15,8 +15,8 @@ module.exports = function(usersEmail) {
 	var mailOptions = {
 	  from: '"Yogesh Rathod" <yr1666@gmail.com>',
 	  to: usersEmail,
-	  subject: "Successfully Registered on Yogesh Rathod's MEAN Stack App.",
-	  html: "<b>Thank you For Registering on Yogesh Rathod's MEAN Stack App.</b>"
+	  subject: "Successfully Registered on Yogesh Rathod's NodeJS App.",
+	  html: "<b>Thank you For Registering on Yogesh Rathod's NodeJS App.</b>"
 	}
 
 	transporter.sendMail(mailOptions, function(err, info) {

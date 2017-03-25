@@ -28,8 +28,7 @@ module.exports = function (app) {
 	 			throw err;
 	 		}
 			res.render('pages/register', {
-				Pagetitle: 'Register',
-				successMessage: false
+				Pagetitle: 'Register'
 			});
 	 	});
  	});
@@ -47,14 +46,26 @@ module.exports = function (app) {
 
 		var usersInfo = new setupModel(usersData);
 
+		if ( req.body.picture ) {
+			console.log('Uploading Image', req.body.picture );
+		}
+
 		usersInfo.save( function (err, data) {
 			if (err) {
 				throw err;
 			}
-			// sendRegistrationEmail( req.body.email );
-			res.render('pages/register', {
-				Pagetitle: 'Register',
-				successMessage: true
+
+			if ( req.body.email ) {
+				sendRegistrationEmail( req.body.email );
+			}
+			console.log("data", data);
+
+			res.render('pages/main', {
+				Pagetitle: 'Main',
+				name: req.body.name,
+				email: req.body.email,
+				mobilenumber: req.body.number,
+				profileimage: req.body.picture
 			});
 		});
 	});
