@@ -6,37 +6,79 @@
 			</h2>
 		</div>
 		<p>All Fields with <span class="mandatory">( * )</span> Are Mandatory</p>
-		<div class="form-group">
-			<form action="/user-registration" method="POST" enctype="multipart/form-data" >
-				<div class="form">
-					<div class="form-group">
-						<label>Name <span class="mandatory">*</span></label>
-						<input type="text" name="name" class="form-control">
+
+		<% if (errors) { %>
+			<ul class="alert-danger errors-list">
+				<% errors.forEach(function(errorsMsgs) { %>
+					<li><%- errorsMsgs.msg %></li>
+				<% }); %>
+			</ul>
+			<div class="form-group">
+				<form action="/user-registration" method="POST" enctype="multipart/form-data" >
+					<div class="form">
+						<div class="form-group">
+							<label>Name <span class="mandatory">*</span></label>
+							<input type="text" name="name" class="form-control"  value="<%- name %>">
+						</div>
+						<div class="form-group">
+							<label>Email <span class="mandatory">*</span></label>
+							<input type="text" name="email" class="form-control" value="<%- email %>">
+						</div>
+						<div class="form-group">
+							<label>Password <span class="mandatory">*</span></label>
+							<input type="text" name="password" class="form-control" value="<%- password %>">
+						</div>
+						<div class="form-group">
+							<label>Mobile Number</label>
+							<input type="text" name="number" class="form-control" value="<%- number %>">
+						</div>
+						<div class="form-group">
+							<label>Profile Picture</label>
+							<input type="file" name="picture" class="form-control">
+						</div>
+						<div class="form-group">
+							<input type="submit" name="submit" class="btn btn-primary">
+						</div>
+						<div class="form-group">
+							<a href="/login" class="btn btn-info">Already Registered Login</a>
+						</div>
 					</div>
-					<div class="form-group">
-						<label>Email <span class="mandatory">*</span></label>
-						<input type="text" name="email" class="form-control">
-					</div>
-					<div class="form-group">
-						<label>Password <span class="mandatory">*</span></label>
-						<input type="text" name="password" class="form-control">
-					</div>
-					<div class="form-group">
-						<label>Mobile Number</label>
-						<input type="text" name="number" class="form-control">
-					</div>
-					<div class="form-group">
-						<label>Profile Picture</label>
-						<input type="file" name="picture" class="form-control">
-					</div>
-					<div class="form-group">
-						<input type="submit" name="submit" class="btn btn-primary">
-					</div>
-					<div class="form-group">
-						<a href="/login" class="btn btn-info">Already Registered Login</a>
-					</div>
+				</form>
+			</div>
+		<% } else { %>
+			<div class="form-group">
+					<form action="/user-registration" method="POST" enctype="multipart/form-data" >
+						<div class="form">
+							<div class="form-group">
+								<label>Name <span class="mandatory">*</span></label>
+								<input type="text" name="name" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Email <span class="mandatory">*</span></label>
+								<input type="text" name="email" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Password <span class="mandatory">*</span></label>
+								<input type="text" name="password" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Mobile Number</label>
+								<input type="text" name="number" class="form-control">
+							</div>
+							<div class="form-group">
+								<label>Profile Picture</label>
+								<input type="file" name="picture" class="form-control">
+							</div>
+							<div class="form-group">
+								<input type="submit" name="submit" class="btn btn-primary">
+							</div>
+							<div class="form-group">
+								<a href="/login" class="btn btn-info">Already Registered Login</a>
+							</div>
+						</div>
+					</form>
 				</div>
-			</form>
-		</div>
+		<% } %>
+
 	</div>
 </div>

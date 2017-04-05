@@ -55,7 +55,6 @@ module.exports = function (app) {
 	// Home Page
 	app.get('/', function (req, res) {
 		setupModel.find(function (err, data) {
-			console.log(data);
 	 		if (err) {
 	 			throw err;
 	 		}
@@ -81,7 +80,8 @@ module.exports = function (app) {
 	 			throw err;
 	 		}
 			res.render('pages/register', {
-				Pagetitle: 'Register'
+				Pagetitle: 'Register',
+				errors: false
 			});
 	 	});
  	});
@@ -89,37 +89,62 @@ module.exports = function (app) {
 	// Save User's Data
 	app.post('/user-registration', upload.single('picture'), function (req, res) {
 
-		if ( req.file ) {
-			console.log(req.file);
-			// Profile Image Info
-			var profileImage = req.file.filename;
+		var name = req.body.name,
+				email = req.body.email,
+				password = req.body.password,
+				phnNumber = req.body.number;
+
+		req.check('name', 'Name is Required').notEmpty();
+		req.check('email', 'Email is Required').notEmpty();
+		req.check('email', 'Email is Not Valid ').isEmail();
+		req.check('password', 'Password is Required').notEmpty();
+		// req.check('phnNumber', 'Number is Not Valid').isInt();
+
+		var errors = req.validationErrors();
+
+		if (errors) {
+
+			res.render('pages/register', {
+				Pagetitle: 'Register',
+				errors: errors,
+				name: name,
+				email: email,
+				password: password,
+				number: phnNumber,
+			});
 		} else {
-			var profileImage = 'profileImageDefault.png';
+
+			if ( req.file ) {
+				// Profile Image Info
+				var profileImage = req.file.filename;
+			} else {
+				var profileImage = 'profileImageDefault.png';
+			}
+
+			var usersData = {
+				fullname: name,
+				email: email,
+				password: password,
+				mobilenumber: phnNumber,
+				profileimage: profileImage
+			};
+
+			var usersInfo = new setupModel(usersData);
+
+			usersInfo.save( function (err, data) {
+				if (err) {
+					throw err;
+				}
+
+				if ( req.body.email ) {
+					sendRegistrationEmail( req.body.email );
+					// sendSMS();
+				}
+
+				res.location('/main');
+				res.redirect('/main');
+			});
 		}
-
-		var usersData = {
-			fullname: req.body.name,
-			email: req.body.email,
-			password: req.body.password,
-			mobilenumber: req.body.number,
-			profileimage: profileImage
-		};
-
-		var usersInfo = new setupModel(usersData);
-
-		usersInfo.save( function (err, data) {
-			if (err) {
-				throw err;
-			}
-
-			if ( req.body.email ) {
-				sendRegistrationEmail( req.body.email );
-				// sendSMS();
-			}
-
-			res.location('/main');
-			res.redirect('/main');
-		});
 	});
 
 	// Login Page
