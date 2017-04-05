@@ -1,16 +1,61 @@
+// require Node Dependencies
+// var express = require('express');
+// var app = express();
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var expresssession = require('express-session');
+var expressValidator = require('express-validator');
+var flash = require('connect-flash');
+
+
 // require Local modules
 var setupModel = require('../models/setupModel');
 var sendRegistrationEmail = require('./mailerController');
+// var sendSMS = require('./smsController');
 
 module.exports = function (app) {
 
 	app.use( bodyParser.json() );
 	app.use( bodyParser.urlencoded({ extended: true }) );
+	var upload = multer({ dest: './public/uploads' });
+
+	// Express Session
+	app.use(expresssession({
+		secret: 'secret',
+		saveUninitialized: true,
+		resave: true
+	}));
+
+	// Express Validator
+	app.use(expressValidator({
+	  errorFormatter: function(param, msg, value) {
+	      var namespace = param.split('.')
+	      , root    = namespace.shift()
+	      , formParam = root;
+
+	    while(namespace.length) {
+	      formParam += '[' + namespace.shift() + ']';
+	    }
+	    return {
+	      param : formParam,
+	      msg   : msg,
+	      value : value
+	    };
+	  }
+	}));
+
+	// Flash Messages
+	app.use(flash());
+	app.use(require('connect-flash')());
+	app.use(function (req, res, next) {
+	  res.locals.messages = require('express-messages')(req, res);
+	  next();
+	});
 
 	// Home Page
 	app.get('/', function (req, res) {
 		setupModel.find(function (err, data) {
+			console.log(data);
 	 		if (err) {
 	 			throw err;
 	 		}
@@ -19,6 +64,14 @@ module.exports = function (app) {
 				data: data
 			});
 	 	});
+ 	});
+
+
+ 	// Portfolio Page
+	app.get('/portfolio', function (req, res) {
+		res.render('pages/portfolio', {
+			Pagetitle: 'Portfolio'
+		});
  	});
 
  	// Register Page
@@ -34,21 +87,25 @@ module.exports = function (app) {
  	});
 
 	// Save User's Data
-	app.post('/user-registration', function (req, res) {
+	app.post('/user-registration', upload.single('picture'), function (req, res) {
+
+		if ( req.file ) {
+			console.log(req.file);
+			// Profile Image Info
+			var profileImage = req.file.filename;
+		} else {
+			var profileImage = 'profileImageDefault.png';
+		}
 
 		var usersData = {
 			fullname: req.body.name,
 			email: req.body.email,
 			password: req.body.password,
 			mobilenumber: req.body.number,
-			profileimage: req.body.picture
+			profileimage: profileImage
 		};
 
 		var usersInfo = new setupModel(usersData);
-
-		if ( req.body.picture ) {
-			console.log('Uploading Image', req.body.picture );
-		}
 
 		usersInfo.save( function (err, data) {
 			if (err) {
@@ -57,16 +114,11 @@ module.exports = function (app) {
 
 			if ( req.body.email ) {
 				sendRegistrationEmail( req.body.email );
+				// sendSMS();
 			}
-			console.log("data", data);
 
-			res.render('pages/main', {
-				Pagetitle: 'Main',
-				name: req.body.name,
-				email: req.body.email,
-				mobilenumber: req.body.number,
-				profileimage: req.body.picture
-			});
+			res.location('/main');
+			res.redirect('/main');
 		});
 	});
 
@@ -74,6 +126,13 @@ module.exports = function (app) {
 	app.get('/login', function (req, res) {
 		res.render('pages/login', {
 			Pagetitle: 'Login'
+ 		});
+	});
+
+	// Main Page
+	app.get('/main', function (req, res) {
+		res.render('pages/main', {
+			Pagetitle: 'Main'
  		});
 	});
 

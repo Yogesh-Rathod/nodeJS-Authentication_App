@@ -7,7 +7,7 @@ var RegistrationSchema = new Schema({
 	email: String,
 	mobilenumber: String,
 	password: String,
-	profileimage:  { data: Buffer, contentType: String }
+	profileimage:  String
 });
 
 var nodeApp = mongoose.model('nodeApp', RegistrationSchema);

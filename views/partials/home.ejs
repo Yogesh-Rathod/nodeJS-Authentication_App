@@ -19,7 +19,10 @@
 	    <% data.forEach(function(newData) { %>
 			<div class="tr clearfix table-bordered">
 				<div class="td col-xs-3"><%= newData.fullname %></div>
-				<div class="td col-xs-3"><%= newData.username %></div>
+				<div class="td col-xs-3">
+					<!-- <img class="img-responsive" src="/uploads/default.jpg"> -->
+					<img class="img-responsive" src="/uploads/<%= newData.profileimage %>">
+				</div>
 				<div class="td col-xs-3"><%= newData.email %></div>
 				<% if (newData.mobilenumber) { %>
 					<div class="td col-xs-3"><%= newData.mobilenumber %></div>
