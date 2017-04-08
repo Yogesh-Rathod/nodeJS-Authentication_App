@@ -146,7 +146,7 @@ module.exports = function (app) {
 					sendRegistrationEmail( req.body.email );
 					// sendSMS();
 				}
-
+				req.flash('success', 'You have successfully Registered Please Login.');
 				res.location('/main');
 				res.redirect('/main');
 			});
