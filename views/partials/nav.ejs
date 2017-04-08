@@ -1,18 +1,18 @@
 <nav class="navbar navbar-default navbar-static-top navbar-inverse">
   <div class="container">
     <ul class="nav navbar-nav">
-      <li>
+      <li <% if (Pagetitle === 'Home') { %>class="active" <% } %> >
         <a href="/"></span> Home</a>
       </li>
       <% if( Pagetitle != 'Main' ) { %>
-        <li>
+        <li <% if (Pagetitle === 'Register') { %>class="active" <% } %> >
           <a href="/register">Register</a>
         </li>
-        <li>
+        <li <% if (Pagetitle === 'Login') { %>class="active" <% } %> >
           <a href="/login">Login</a>
         </li>
       <% } %>
-      <li>
+      <li <% if (Pagetitle === 'Main') { %>class="active" <% } %> >
         <a href="/main">Main</a>
       </li>
     </ul>

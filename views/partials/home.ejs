@@ -10,26 +10,31 @@
 	<% if (data) { %>
 		<div class="thead table-bordered">
 			<div class="tr clearfix">
-				<div class="th col-xs-3">Full Name</div>
-				<div class="th col-xs-3">Profile Image</div>
-				<div class="th col-xs-3">Email</div>
-				<div class="th col-xs-3">Mobile Number</div>
+				<div class="th col-xs-2">Full Name</div>
+				<div class="th col-xs-2">Profile Image</div>
+				<div class="th col-xs-2">Email</div>
+				<div class="th col-xs-2">Mobile Number</div>
+				<div class="th col-xs-2">Actions</div>
 			</div>
 		</div>
 		<div class="tbody">
 	    <% data.forEach(function(newData) { %>
 			<div class="tr clearfix table-bordered">
-				<div class="td col-xs-3"><%= newData.fullname %></div>
-				<div class="td col-xs-3">
+				<div class="td col-xs-2"><%= newData.fullname %></div>
+				<div class="td col-xs-2">
 					<!-- <img class="img-responsive" src="/uploads/default.jpg"> -->
 					<img class="img-responsive" src="/uploads/<%= newData.profileimage %>">
 				</div>
-				<div class="td col-xs-3"><%= newData.email %></div>
+				<div class="td col-xs-2"><%= newData.email %></div>
 				<% if (newData.mobilenumber) { %>
-					<div class="td col-xs-3"><%= newData.mobilenumber %></div>
+					<div class="td col-xs-2"><%= newData.mobilenumber %></div>
 				<% } else { %>
-					<div class="td col-xs-3">Not Given</div>
+					<div class="td col-xs-2">Not Given</div>
 				<% } %>
+				<div class="td col-xs-2">
+					<a href="/edituser/<%= newData.id %>" class="btn btn-primary" >Edit</a>
+					<a href="/delete/<%= newData.id %>" class="btn btn-danger" >Delete</a>
+				</div>
 			</div>
 	    <% }); %>
 		</div>

@@ -216,4 +216,49 @@ module.exports = function (app) {
 		res.redirect('/login');
 	};
 
+	// Edit A User Info
+	app.get('/edituser/:id', function (req, res) {
+		setupModel.findById(req.params.id, function(err, data) {
+			if(err) { throw err; }
+			res.render('pages/edituser', {
+				Pagetitle: 'Edit User',
+				data: data
+			});
+		});
+	});
+
+	// Update A User Info
+	app.post('/updateuser/:id', upload.single('picture'), function (req, res) {
+		if ( req.file ) {
+			// Profile Image Info
+			var profileImage = req.file.filename;
+		} else {
+			var profileImage = 'profileImageDefault.png';
+		}
+
+		setupModel.findByIdAndUpdate(req.params.id,
+			{
+				$set: {
+					fullname: req.body.name,
+					email: req.body.email,
+					password: req.body.password,
+					mobilenumber: req.body.number,
+					profileimage: profileImage
+				}
+			}, function(err, done) {
+			if(err) { throw err; }
+			req.flash('success', 'User Info Updated Successfully.');
+    	res.redirect('/');
+		});
+	});
+
+	// Delete A User
+	app.get('/delete/:id', function(req, res) {
+		setupModel.findByIdAndRemove(req.params.id, function(err, done){
+    	if(err) { throw err; }
+    	req.flash('success', 'User Successfully Deleted.');
+    	res.redirect('/');
+		});
+	});
+
 };
