@@ -67,6 +67,18 @@ main li {
   margin-bottom: 10px;
 }
 
-.errors-list li {
+.errors-list li,
+.error li,
+.success li {
   list-style-type: disc;
+}
+
+ul.error {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+}
+
+ul.success {
+  background-color: #0f0;
 }

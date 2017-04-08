@@ -25,6 +25,6 @@ module.exports = function (app) {
 				throw err;
 			}
 			res.send(data);
-		})
-	})
+		});
+	});
 }

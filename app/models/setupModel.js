@@ -12,4 +12,4 @@ var RegistrationSchema = new Schema({
 
 var nodeApp = mongoose.model('nodeApp', RegistrationSchema);
 
-module.exports = nodeApp;
+var User = module.exports = nodeApp;

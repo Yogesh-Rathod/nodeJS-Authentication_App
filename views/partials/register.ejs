@@ -5,7 +5,9 @@
 				User Registration Form
 			</h2>
 		</div>
+
 		<p>All Fields with <span class="mandatory">( * )</span> Are Mandatory</p>
+		<%- messages() %>
 
 		<% if (errors) { %>
 			<ul class="alert-danger errors-list">
@@ -13,6 +15,7 @@
 					<li><%- errorsMsgs.msg %></li>
 				<% }); %>
 			</ul>
+
 			<div class="form-group">
 				<form action="/user-registration" method="POST" enctype="multipart/form-data" >
 					<div class="form">

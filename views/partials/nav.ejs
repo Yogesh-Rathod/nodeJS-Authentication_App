@@ -4,18 +4,24 @@
       <li>
         <a href="/"></span> Home</a>
       </li>
-      <!-- <li>
-        <a href="/portfolio">Visit Portfolio</a>
-      </li> -->
+      <% if( Pagetitle != 'Main' ) { %>
+        <li>
+          <a href="/register">Register</a>
+        </li>
+        <li>
+          <a href="/login">Login</a>
+        </li>
+      <% } %>
       <li>
-        <a href="/register">Register</a>
+        <a href="/main">Main</a>
       </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      <li>
-        <a href="/home">Website</a>
-      </li>
+    </ul>
+    <ul class="pull-right nav navbar-nav">
+      <% if( Pagetitle == 'Main' ) { %>
+        <li>
+          <a href="/logout">Logout</a>
+        </li>
+      <% } %>
     </ul>
   </div>
 </nav>

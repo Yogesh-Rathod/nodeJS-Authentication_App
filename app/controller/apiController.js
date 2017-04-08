@@ -6,6 +6,8 @@ var multer = require('multer');
 var expresssession = require('express-session');
 var expressValidator = require('express-validator');
 var flash = require('connect-flash');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 
 // require Local modules
@@ -51,6 +53,8 @@ module.exports = function (app) {
 	  res.locals.messages = require('express-messages')(req, res);
 	  next();
 	});
+	app.use(passport.initialize());
+  app.use(passport.session());
 
 	// Home Page
 	app.get('/', function (req, res) {
@@ -58,6 +62,7 @@ module.exports = function (app) {
 	 		if (err) {
 	 			throw err;
 	 		}
+
 			res.render('pages/index', {
 				Pagetitle: 'Home',
 				data: data
@@ -79,6 +84,7 @@ module.exports = function (app) {
 	 		if (err) {
 	 			throw err;
 	 		}
+
 			res.render('pages/register', {
 				Pagetitle: 'Register',
 				errors: false
@@ -154,11 +160,60 @@ module.exports = function (app) {
  		});
 	});
 
+	passport.serializeUser(function(user, done) {
+	  done(null, user.id);
+	});
+
+	passport.deserializeUser(function(id, done) {
+	  setupModel.findById(id, function(err, user) {
+	    done(err, user);
+	  });
+	});
+
+	passport.use(new LocalStrategy({
+		usernameField: 'email',
+    passwordField: 'password'
+  	}, function(username, password, done) {
+	    setupModel.findOne({ email: username }, function (err, user) {
+	      if (err) { return done(err); }
+	      if (!user) {
+	        return done(null, false, { message: 'Incorrect Email.' });
+	      }
+	      if (user.password != password) {
+	      	return done(null, false, { message: 'Incorrect Password.' });
+	      }
+	      return done(null, user);
+	    });
+	  }
+	));
+
+	// Login Page
+	app.post('/login',  passport.authenticate('local', { successRedirect: '/main',
+		failureRedirect: '/login',
+		failureFlash: true }));
+
+	// Logout Page
+	app.get('/logout', function (req, res) {
+		req.logout();
+		req.flash('success', 'You have successfully logged out.');
+
+		res.render('pages/login', {
+			Pagetitle: 'Login'
+ 		});
+	});
+
 	// Main Page
-	app.get('/main', function (req, res) {
+	app.get('/main', ensureAuthenticated , function (req, res) {
 		res.render('pages/main', {
 			Pagetitle: 'Main'
  		});
 	});
+
+	function ensureAuthenticated(req, res, done) {
+		if (req.isAuthenticated()) {
+			return done();
+		}
+		res.redirect('/login');
+	};
 
 };
