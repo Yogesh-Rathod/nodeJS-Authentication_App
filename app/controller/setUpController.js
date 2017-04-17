@@ -22,7 +22,7 @@ module.exports = function (app) {
 
 		setupModel.create( userinfo, function (err, data) {
 			if (err) {
-				throw err;
+				console.log(err);
 			}
 			res.send(data);
 		});

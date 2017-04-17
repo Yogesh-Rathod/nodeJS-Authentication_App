@@ -60,7 +60,7 @@ module.exports = function (app) {
 	app.get('/', function (req, res) {
 		setupModel.find(function (err, data) {
 	 		if (err) {
-	 			throw err;
+	 			console.log(err);
 	 		}
 
 			res.render('pages/index', {
@@ -82,7 +82,7 @@ module.exports = function (app) {
 	app.get('/register', function (req, res) {
 		setupModel.find(function (err, data) {
 	 		if (err) {
-	 			throw err;
+	 			console.log(err);
 	 		}
 
 			res.render('pages/register', {
@@ -139,7 +139,7 @@ module.exports = function (app) {
 
 			usersInfo.save( function (err, data) {
 				if (err) {
-					throw err;
+					console.log(err);
 				}
 
 				if ( req.body.email ) {
@@ -219,7 +219,7 @@ module.exports = function (app) {
 	// Edit A User Info
 	app.get('/edituser/:id', function (req, res) {
 		setupModel.findById(req.params.id, function(err, data) {
-			if(err) { throw err; }
+			if(err) { console.log(err); }
 			res.render('pages/edituser', {
 				Pagetitle: 'Edit User',
 				data: data
@@ -246,7 +246,7 @@ module.exports = function (app) {
 					profileimage: profileImage
 				}
 			}, function(err, done) {
-			if(err) { throw err; }
+			if(err) { console.log(err); }
 			req.flash('success', 'User Info Updated Successfully.');
     	res.redirect('/');
 		});
@@ -255,7 +255,7 @@ module.exports = function (app) {
 	// Delete A User
 	app.get('/delete/:id', function(req, res) {
 		setupModel.findByIdAndRemove(req.params.id, function(err, done){
-    	if(err) { throw err; }
+    	if(err) { console.log(err); }
     	req.flash('success', 'User Successfully Deleted.');
     	res.redirect('/');
 		});
