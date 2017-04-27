@@ -9,7 +9,7 @@ var config = require('./app/config');
 var apiController = require('./app/controller/apiController');
 
 // Set Port To be used
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 5000;
 
 // Using cors for Cross domain Api Requests
 app.use(cors());
