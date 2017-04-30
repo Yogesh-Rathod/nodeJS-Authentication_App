@@ -61,7 +61,7 @@ module.exports = function (app) {
 	app.get('/', function (req, res) {
 		setupModel.find(function (err, data) {
 	 		if (err) {
-	 			throw err;
+	 			console.log(err);
 	 		}
 
 			res.render('pages/index', {
@@ -83,7 +83,7 @@ module.exports = function (app) {
 	app.get('/register', function (req, res) {
 		setupModel.find(function (err, data) {
 	 		if (err) {
-	 			throw err;
+	 			console.log(err);
 	 		}
 
 			res.render('pages/register', {
@@ -138,19 +138,20 @@ module.exports = function (app) {
 
 			var usersInfo = new setupModel(usersData);
 
-			// usersInfo.save( function (err, data) {
-			// 	if (err) {
-			// 		throw err;
-			// 	}
+			usersInfo.save( function (err, data) {
+				if (err) {
+					throw err;
+				}
 
-			// 	if ( req.body.email ) {
-			// 		sendRegistrationEmail( req.body.email );
-			// 		// sendSMS();
-			// 	}
-			// 	req.flash('success', 'You have successfully Registered Please Login.');
-			// 	res.location('/main');
-			// 	res.redirect('/main');
-			// });
+				if ( req.body.email ) {
+					sendRegistrationEmail( req.body.email );
+					// sendSMS();
+				}
+				req.flash('success', 'You have successfully Registered Please Login.');
+				res.location('/main');
+				res.redirect('/main');
+			});
+
 		}
 	});
 
@@ -220,7 +221,7 @@ module.exports = function (app) {
 	// Edit A User Info
 	app.get('/edituser/:id', function (req, res) {
 		setupModel.findById(req.params.id, function(err, data) {
-			if(err) { throw err; }
+			if(err) { console.log(err); }
 			res.render('pages/edituser', {
 				Pagetitle: 'Edit User',
 				data: data
@@ -247,7 +248,7 @@ module.exports = function (app) {
 					profileimage: profileImage
 				}
 			}, function(err, done) {
-			if(err) { throw err; }
+			if(err) { console.log(err); }
 			req.flash('success', 'User Info Updated Successfully.');
     	res.redirect('/');
 		});
@@ -256,7 +257,7 @@ module.exports = function (app) {
 	// Delete A User
 	app.get('/delete/:id', function(req, res) {
 		setupModel.findByIdAndRemove(req.params.id, function(err, done){
-    	if(err) { throw err; }
+    	if(err) { console.log(err); }
     	req.flash('success', 'User Successfully Deleted.');
     	res.redirect('/');
 		});
