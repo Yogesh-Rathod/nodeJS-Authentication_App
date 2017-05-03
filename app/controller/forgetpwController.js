@@ -1,5 +1,6 @@
 var nodemailer = require('nodemailer');
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 // create reusable transporter object using the default SMTP transport
 var transporter = nodemailer.createTransport({
   service: 'gmail',
@@ -15,14 +16,14 @@ module.exports = function(usersEmail) {
 	var mailOptions = {
 	  from: '"Yogesh Rathod" <yr1666@gmail.com>',
 	  to: usersEmail,
-	  subject: "Successfully Registered on Yogesh Rathod's NodeJS App.",
-	  html: "<b>Thank you For Registering on Yogesh Rathod's NodeJS App.</b>"
+	  subject: "Yogesh Rathod's NodeJS App Reset User Password Link",
+	  html: "<p>Here is the Link to reset your Password.</p><div><a href='http://localhost:3000/resetpassword/"+usersEmail+">http://localhost:3000/resetpassword/</a></div>"
 	}
 
 	transporter.sendMail(mailOptions, function(err, info) {
 		if (err) {
-			console.log(err);
+			throw err;
 		}
-		console.log('Message Successfully Sent.');
+		console.log('Reset Password Mail Successfully Sent.');
 	});
 }

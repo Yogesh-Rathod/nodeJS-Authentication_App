@@ -13,6 +13,7 @@ var LocalStrategy = require('passport-local').Strategy;
 // require Local modules
 var setupModel = require('../models/setupModel');
 var sendRegistrationEmail = require('./mailerController');
+var sendForgetpasswordEmail = require('./forgetpwController');
 // var sendSMS = require('./smsController');
 
 module.exports = function (app) {
@@ -104,6 +105,7 @@ module.exports = function (app) {
 		req.check('email', 'Email is Required').notEmpty();
 		req.check('email', 'Email is Not Valid ').isEmail();
 		req.check('password', 'Password is Required').notEmpty();
+		req.check('phnNumber', 'Phone Number is Not Valid').isNumeric();
 
 		var errors = req.validationErrors();
 
@@ -138,7 +140,7 @@ module.exports = function (app) {
 
 			usersInfo.save( function (err, data) {
 				if (err) {
-					console.log(err);
+					throw err;
 				}
 
 				if ( req.body.email ) {
@@ -149,6 +151,7 @@ module.exports = function (app) {
 				res.location('/main');
 				res.redirect('/main');
 			});
+
 		}
 	});
 
@@ -159,8 +162,6 @@ module.exports = function (app) {
 		var job = new CronJob({
 			cronTime: '00 46 10 * * 1-5',
 			onTick: function() {
-				console.log("cronTime");
-				console.log("onTick");
 	    /*
 	     * Runs every weekday (Monday through Friday)
 	     * at 11:30:00 AM. It does not run on Saturday
@@ -277,9 +278,42 @@ module.exports = function (app) {
 		});
 	});
 
+	// Forget Password
+	app.get('/forgetpassword', function (req, res) {
+		res.render('pages/forgetpassword', { Pagetitle: 'Forget Password' });
+	});
+
+	app.post('/forgetpassword', function (req, res) {
+		sendForgetpasswordEmail( req.body.email );
+		req.flash('success', 'Password Reset link has been sent to your email.');
+		res.redirect('/forgetpassword');
+	});
+
+	// Reset Password
+	app.get('/resetpassword/:id', function (req, res) {
+		var errors = false;
+		res.render('pages/resetpassword', { Pagetitle: 'Reset Password', errors: errors });
+	});
+
+	app.post('/resetpassword/', function (req, res) {
+		var password = req.body.password,
+				passwordTwo = req.body.passwordTwo;
+		req.check('password', 'Name is Required').notEmpty();
+		req.check('passwordTwo', 'password Do Not match').equals(password);
+		var errors = req.validationErrors();
+
+		if (errors) {
+			res.render('pages/resetpassword', {
+				Pagetitle: 'Reset Password',
+				errors: errors,
+				password: password
+			});
+		}
+	});
+
 	// 404 Page
 	app.get('*', function(req, res) {
     res.render('pages/404.ejs', { Pagetitle: '404 Page',});
-	});
+  });
 
 };
