@@ -104,7 +104,6 @@ module.exports = function (app) {
 		req.check('email', 'Email is Required').notEmpty();
 		req.check('email', 'Email is Not Valid ').isEmail();
 		req.check('password', 'Password is Required').notEmpty();
-		// req.check('phnNumber', 'Number is Not Valid').isInt();
 
 		var errors = req.validationErrors();
 
@@ -155,6 +154,23 @@ module.exports = function (app) {
 
 	// Login Page
 	app.get('/login', function (req, res) {
+
+		var CronJob = require('cron').CronJob;
+		var job = new CronJob({
+			cronTime: '00 46 10 * * 1-5',
+			onTick: function() {
+				console.log("cronTime");
+				console.log("onTick");
+	    /*
+	     * Runs every weekday (Monday through Friday)
+	     * at 11:30:00 AM. It does not run on Saturday
+	     * or Sunday.
+	     */
+	   },
+	   start: false,
+	   timeZone: 'Asia/Kolkata'
+	 });
+		job.start();
 		res.render('pages/login', {
 			Pagetitle: 'Login'
  		});
@@ -259,6 +275,11 @@ module.exports = function (app) {
     	req.flash('success', 'User Successfully Deleted.');
     	res.redirect('/');
 		});
+	});
+
+	// 404 Page
+	app.get('*', function(req, res) {
+    res.render('pages/404.ejs', { Pagetitle: '404 Page',});
 	});
 
 };
